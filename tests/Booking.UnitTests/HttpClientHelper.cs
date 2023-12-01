@@ -1,5 +1,5 @@
-﻿using Newtonsoft.Json;
-using System.Net;
+﻿using System.Net;
+using System.Text.Json;
 
 namespace Booking.UnitTests;
 
@@ -25,7 +25,7 @@ public class HttpClientHelper
 
         public void SetupResponse<T>(HttpStatusCode statusCode, T? response = default)
         {
-            var content = response == null ? "{}" : JsonConvert.SerializeObject(response);
+            var content = response == null ? "{}" : JsonSerializer.Serialize(response);
 
             _response = new HttpResponseMessage
             {
