@@ -36,7 +36,7 @@ public class HttpClientHelper
     {
         var httpClient = new HttpClient(messageHandler)
         {
-            BaseAddress = new Uri("http://localhost/")
+            BaseAddress = new Uri("https://example.com")
         };
         return httpClient;
     }
