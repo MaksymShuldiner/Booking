@@ -24,8 +24,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\Booking.Core\Booking.Core.csproj" />
-    <ProjectReference Include="..\src\Booking.Web\Booking.Web.csproj" />
+    <ProjectReference Include="..\..\src\Booking.Application\Booking.Application.csproj" />
+    <ProjectReference Include="..\..\src\Booking.Core\Booking.Core.csproj" />
+    <ProjectReference Include="..\..\src\Booking.Web\Booking.Web.csproj" />
   </ItemGroup>
 
 </Project>
