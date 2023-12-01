@@ -1,29 +1,22 @@
-﻿using System.Net;
+﻿using Microsoft.AspNetCore.Http;
+using System.Net;
 using System.Text.Json;
 
 namespace Booking.UnitTests;
 
 public class HttpClientHelper
 {
-    public static CustomHttpMessageHandler ConfigureMessageHandler<T>(HttpStatusCode statusCode, T? response = default)
+    public static CustomHttpMessageHandler<T> ConfigureMessageHandler<T>(HttpStatusCode statusCode, T? response = default)
     {
-        var messageHandler = new CustomHttpMessageHandler();
-        messageHandler.SetupResponse(statusCode, response);
+        var messageHandler = new CustomHttpMessageHandler<T>(statusCode, response);
         return messageHandler;
     }
 
-    public class CustomHttpMessageHandler : HttpMessageHandler
+    public class CustomHttpMessageHandler<T> : HttpMessageHandler
     {
-        private HttpResponseMessage _response;
-        private int _sendAsyncCallCount;
+        private readonly HttpResponseMessage _response;
 
-        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
-        {
-            _sendAsyncCallCount++;
-            return Task.FromResult(_response);
-        }
-
-        public void SetupResponse<T>(HttpStatusCode statusCode, T? response = default)
+        public CustomHttpMessageHandler(HttpStatusCode statusCode, T? response = default)
         {
             var content = response == null ? "{}" : JsonSerializer.Serialize(response);
 
@@ -34,7 +27,10 @@ public class HttpClientHelper
             };
         }
 
-        public int SendAsyncCallCount => _sendAsyncCallCount;
+        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(_response);
+        }
     }
 
     public static HttpClient CreateHttpClient(HttpMessageHandler messageHandler)
