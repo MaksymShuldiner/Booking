@@ -1,5 +1,4 @@
 ﻿using Booking.Application.Contracts.Requests;
-using Booking.Application.Contracts.Requests.Shared;
 using Booking.Application.Services.Abstractions;
 using Booking.Web.Controllers;
 using Microsoft.AspNetCore.Mvc;
