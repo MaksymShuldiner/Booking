@@ -1,9 +1,8 @@
-﻿namespace Booking.Core.Entities.ValueObjects
+﻿namespace Booking.Core.Entities.ValueObjects;
+
+public record Facility
 {
-    public record Facility
-    {
-        public Guid FacilityId { get; set; }
-        public string? Name { get; set; }
-        public string? Address { get; set; } = null;
-    }
+    public Guid FacilityId { get; set; }
+    public string? Name { get; set; }
+    public string? Address { get; set; } = null;
 }

@@ -1,13 +1,12 @@
-﻿namespace Booking.Core.Enums
+﻿namespace Booking.Core.Enums;
+
+public enum DayOfWeek
 {
-    public enum DayOfWeek
-    {
-        Monday,
-        Tuesday,
-        Wednesday,
-        Thursday,
-        Friday,
-        Saturday,
-        Sunday
-    }
+    Monday,
+    Tuesday,
+    Wednesday,
+    Thursday,
+    Friday,
+    Saturday,
+    Sunday
 }

@@ -1,56 +1,52 @@
 ﻿using Booking.Application.Contracts.Requests;
 using Booking.Application.Services;
 using Booking.Core.Entities.ValueObjects;
-using Moq;
 using System.Net;
-using System.Net.Http.Json;
-using Booking.Application.Extensions;
 
-namespace Booking.UnitTests.Application
+namespace Booking.UnitTests.Application;
+
+public class TimeSlotServiceTests
 {
-    public class TimeSlotServiceTests
+    [Fact]
+    public async Task GetWeeklyAvailability_EmptyResponse_ReturnsEmptyTimeSlots()
     {
-        [Fact]
-        public async Task GetWeeklyAvailability_EmptyResponse_ReturnsEmptyTimeSlots()
-        {
-            // Arrange
-            var mondayStartDate = new DateOnly(2023, 1, 2);
-            var messageHandler = HttpClientHelper.ConfigureMessageHandler<WeekTimeTable>(HttpStatusCode.OK);
-            var httpClient = HttpClientHelper.CreateHttpClient(messageHandler);
+        // Arrange
+        var mondayStartDate = new DateOnly(2023, 1, 2);
+        var messageHandler = HttpClientHelper.ConfigureMessageHandler<WeekTimeTable>(HttpStatusCode.OK);
+        var httpClient = HttpClientHelper.CreateHttpClient(messageHandler);
 
-            var service = new TimeSlotService(httpClient);
+        var service = new TimeSlotService(httpClient);
 
-            // Act
-            var result = await service.GetWeeklyAvailability(mondayStartDate);
+        // Act
+        var result = await service.GetWeeklyAvailability(mondayStartDate);
 
-            // Assert
-            Assert.Empty(result!.TimeSlots!);
-        }
+        // Assert
+        Assert.Empty(result!.TimeSlots!);
+    }
 
-        [Fact]
-        public async Task TakeSlot_ValidRequest_ReturnsSuccess()
-        {
-            // Arrange
-            var messageHandler = HttpClientHelper.ConfigureMessageHandler<WeekTimeTable>(HttpStatusCode.OK);
-            var httpClient = HttpClientHelper.CreateHttpClient(messageHandler);
+    [Fact]
+    public async Task TakeSlot_ValidRequest_ReturnsSuccess()
+    {
+        // Arrange
+        var messageHandler = HttpClientHelper.ConfigureMessageHandler<WeekTimeTable>(HttpStatusCode.OK);
+        var httpClient = HttpClientHelper.CreateHttpClient(messageHandler);
 
-            var service = new TimeSlotService(httpClient);
+        var service = new TimeSlotService(httpClient);
 
-            // Act and Assert
-            await service.TakeSlot(new TakeSlotRequest());
-        }
+        // Act and Assert
+        await service.TakeSlot(new TakeSlotRequest());
+    }
 
-        [Fact]
-        public async Task TakeSlot_UnsuccessfulRequest_ThrowsHttpRequestException()
-        {
-            // Arrange
-            var messageHandler = HttpClientHelper.ConfigureMessageHandler<WeekTimeTable>(HttpStatusCode.InternalServerError);
-            var httpClient = HttpClientHelper.CreateHttpClient(messageHandler);
+    [Fact]
+    public async Task TakeSlot_UnsuccessfulRequest_ThrowsHttpRequestException()
+    {
+        // Arrange
+        var messageHandler = HttpClientHelper.ConfigureMessageHandler<WeekTimeTable>(HttpStatusCode.InternalServerError);
+        var httpClient = HttpClientHelper.CreateHttpClient(messageHandler);
 
-            var service = new TimeSlotService(httpClient);
+        var service = new TimeSlotService(httpClient);
 
-            // Act and Assert
-            await Assert.ThrowsAsync<HttpRequestException>(() => service.TakeSlot(new TakeSlotRequest()));
-        }
+        // Act and Assert
+        await Assert.ThrowsAsync<HttpRequestException>(() => service.TakeSlot(new TakeSlotRequest()));
     }
 }
